@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, MapPin, DollarSign, Briefcase, ExternalLink } from 'lucide-react';
-import axios from 'axios';
+import api from '../config/api';
 import toast from 'react-hot-toast';
 
 const AddJobModal = ({ isOpen, onClose, onJobAdded }) => {
@@ -42,7 +42,7 @@ const AddJobModal = ({ isOpen, onClose, onJobAdded }) => {
         }
       };
 
-      const response = await axios.post('/api/jobs/add', jobData);
+      const response = await api.post('/api/jobs/add', jobData);
       
       toast.success('Job added successfully!');
       onJobAdded(response.data);

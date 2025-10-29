@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import axios from 'axios';
+import api from '../config/api';
 
 const useAuthStore = create(
   persist(
@@ -12,11 +12,10 @@ const useAuthStore = create(
       login: async (email, password) => {
         set({ isLoading: true });
         try {
-          const response = await axios.post('/api/auth/login', { email, password });
+          const response = await api.post('/api/auth/login', { email, password });
           const { token, user } = response.data;
           
           set({ user, token, isLoading: false });
-          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           
           return { success: true };
         } catch (error) {
@@ -31,11 +30,10 @@ const useAuthStore = create(
       register: async (userData) => {
         set({ isLoading: true });
         try {
-          const response = await axios.post('/api/auth/register', userData);
+          const response = await api.post('/api/auth/register', userData);
           const { token, user } = response.data;
           
           set({ user, token, isLoading: false });
-          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           
           return { success: true };
         } catch (error) {
@@ -49,12 +47,11 @@ const useAuthStore = create(
 
       logout: () => {
         set({ user: null, token: null });
-        delete axios.defaults.headers.common['Authorization'];
       },
 
       updateProfile: async (profileData) => {
         try {
-          const response = await axios.put('/api/auth/profile', profileData);
+          const response = await api.put('/api/auth/profile', profileData);
           set({ user: response.data });
           return { success: true };
         } catch (error) {
@@ -66,19 +63,11 @@ const useAuthStore = create(
       },
 
       initializeAuth: () => {
-        const { token } = get();
-        if (token) {
-          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        }
+        // Auth is handled by the api interceptor
       }
     }),
     {
-      name: 'auth-storage',
-      onRehydrateStorage: () => (state) => {
-        if (state?.token) {
-          axios.defaults.headers.common['Authorization'] = `Bearer ${state.token}`;
-        }
-      }
+      name: 'auth-storage'
     }
   )
 );

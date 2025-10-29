@@ -12,7 +12,7 @@ import {
   Filter,
   Zap
 } from 'lucide-react';
-import axios from 'axios';
+import api from '../config/api';
 import toast from 'react-hot-toast';
 
 const JobSearch = () => {
@@ -36,7 +36,7 @@ const JobSearch = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.get('/api/jobs/search', {
+      const response = await api.get('/api/jobs/search', {
         params: {
           query: searchQuery,
           location: location || 'United States',
@@ -67,7 +67,7 @@ const JobSearch = () => {
 
   const handleSaveJob = async (job) => {
     try {
-      await axios.post('/api/jobs/add', {
+      await api.post('/api/jobs/add', {
         title: job.title,
         company: job.company,
         location: job.location,
@@ -88,7 +88,7 @@ const JobSearch = () => {
 
   const handleQuickApply = async (job) => {
     try {
-      await axios.post('/api/jobs/auto-apply', {
+      await api.post('/api/jobs/auto-apply', {
         jobIds: [job.id],
         coverLetter: 'Auto-generated cover letter',
         resumeId: 'default'

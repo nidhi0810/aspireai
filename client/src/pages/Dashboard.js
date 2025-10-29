@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import AddJobModal from '../components/AddJobModal';
-import axios from 'axios';
+import api from '../config/api';
 import toast from 'react-hot-toast';
 
 const Dashboard = () => {
@@ -44,13 +44,13 @@ const Dashboard = () => {
     setIsLoading(true);
     try {
       // Fetch user's jobs
-      const jobsResponse = await axios.get('/api/jobs/');
+      const jobsResponse = await api.get('/api/jobs/');
       const jobs = jobsResponse.data.jobs || [];
       
       // Fetch wellness data
       let wellnessScore = 0;
       try {
-        const wellnessResponse = await axios.get('/api/wellness/insights');
+        const wellnessResponse = await api.get('/api/wellness/insights');
         wellnessScore = wellnessResponse.data.weeklyAverage?.mood || 0;
       } catch (wellnessError) {
         console.log('Wellness data not available');

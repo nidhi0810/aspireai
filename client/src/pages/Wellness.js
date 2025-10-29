@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, TrendingUp, Calendar, MessageCircle, Target } from 'lucide-react';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+import api from '../config/api';
 
 const Wellness = () => {
   const [todayMood, setTodayMood] = useState(null);
@@ -43,7 +43,7 @@ const Wellness = () => {
       setIsLoading(true);
       
       // Load today's data
-      const todayResponse = await axios.get('/api/wellness/today');
+      const todayResponse = await api.get('/api/wellness/today');
       if (todayResponse.data.data) {
         const todayData = todayResponse.data.data;
         setTodayMood(todayData.mood);
@@ -53,15 +53,15 @@ const Wellness = () => {
       }
 
       // Load weekly data
-      const weeklyResponse = await axios.get('/api/wellness/weekly');
+      const weeklyResponse = await api.get('/api/wellness/weekly');
       setWeeklyData(weeklyResponse.data.data || []);
 
       // Load insights
-      const insightsResponse = await axios.get('/api/wellness/insights');
+      const insightsResponse = await api.get('/api/wellness/insights');
       setInsights(insightsResponse.data);
 
       // Load goals
-      const goalsResponse = await axios.get('/api/wellness/goals');
+      const goalsResponse = await api.get('/api/wellness/goals');
       setGoals(goalsResponse.data.data || []);
 
     } catch (error) {
@@ -81,7 +81,7 @@ const Wellness = () => {
     try {
       setIsSaving(true);
       
-      await axios.post('/api/wellness/log', {
+      await api.post('/api/wellness/log', {
         mood: todayMood,
         stressLevel,
         productivityLevel,
@@ -509,7 +509,7 @@ const Wellness = () => {
                         { name: '8 hours sleep', target: 7, current: 0, type: 'weekly', category: 'sleep' }
                       ];
                       
-                      await axios.post('/api/wellness/goals', { goals: defaultGoals });
+                      await api.post('/api/wellness/goals', { goals: defaultGoals });
                       toast.success('Goals set successfully!');
                       setShowGoalsModal(false);
                       loadWellnessData();

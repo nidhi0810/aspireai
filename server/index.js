@@ -30,7 +30,7 @@ app.use(rateLimit({
 // CORS configuration
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-frontend-domain.com'] 
+    ? ['https://aspireai-frontend.onrender.com', 'https://aspireai.onrender.com'] 
     : ['http://localhost:3000'],
   credentials: true
 }));

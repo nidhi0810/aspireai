@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FileText, Download, Edit, Zap, Plus, X } from 'lucide-react';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+import api from '../config/api';
 
 const Resume = () => {
 
@@ -225,7 +225,7 @@ const Resume = () => {
   const handleSaveResume = async () => {
     setIsSaving(true);
     try {
-      const response = await axios.post('/api/resume/create', {
+      const response = await api.post('/api/resume/create', {
         name: `Resume - ${new Date().toLocaleDateString()}`,
         content: resumeData
       });
@@ -454,7 +454,7 @@ const Resume = () => {
         return;
       }
 
-      const response = await axios.post('/api/ai/generate-summary', {
+      const response = await api.post('/api/ai/generate-summary', {
         userProfile: userInfo
       });
 
