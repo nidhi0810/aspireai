@@ -32,7 +32,7 @@ const allowedOrigins = process.env.NODE_ENV === 'production'
   ? [
       'https://aspireai-frontend.onrender.com', 
       'https://aspireai.onrender.com',
-      // Add your actual frontend URL here
+      'https://aspireai-4-akcq.onrender.com', // Your actual frontend URL
       process.env.FRONTEND_URL
     ].filter(Boolean)
   : ['http://localhost:3000'];
