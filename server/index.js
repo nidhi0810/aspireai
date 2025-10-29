@@ -28,11 +28,22 @@ app.use(rateLimit({
 }));
 
 // CORS configuration
+const allowedOrigins = process.env.NODE_ENV === 'production' 
+  ? [
+      'https://aspireai-frontend.onrender.com', 
+      'https://aspireai.onrender.com',
+      // Add your actual frontend URL here
+      process.env.FRONTEND_URL
+    ].filter(Boolean)
+  : ['http://localhost:3000'];
+
+console.log('🔧 CORS allowed origins:', allowedOrigins);
+
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://aspireai-frontend.onrender.com', 'https://aspireai.onrender.com'] 
-    : ['http://localhost:3000'],
-  credentials: true
+  origin: allowedOrigins,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json({ limit: '10mb' }));
@@ -48,7 +59,26 @@ app.use('/api/test', testRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+  res.json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV,
+    cors: allowedOrigins
+  });
+});
+
+// Root endpoint for testing
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'AspireAI Backend API is running!',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      jobs: '/api/jobs',
+      wellness: '/api/wellness',
+      resume: '/api/resume'
+    }
+  });
 });
 
 // MongoDB connection

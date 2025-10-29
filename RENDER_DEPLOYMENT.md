@@ -27,10 +27,13 @@ This guide will help you deploy your AspireAI application on Render with both fr
    Environment: Node
    Region: Choose closest to your users
    Branch: main
-   Root Directory: server
+   Root Directory: ./server
    Build Command: npm install
    Start Command: npm start
+   Auto-Deploy: Yes
    ```
+
+   **⚠️ IMPORTANT**: Make sure to set `Root Directory` to `./server` (with the dot and slash)
 
 4. **Set Environment Variables**
    ```
